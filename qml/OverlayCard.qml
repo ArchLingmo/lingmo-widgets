@@ -33,6 +33,19 @@ Window {
     // hidden window our transient parent and never shows us
     transientParent: null
 
+    // Wayland: x/y, stays-on-bottom and skip-taskbar don't exist there; a layer-shell
+    // surface under the windows, at the same corner of the primary monitor, and never
+    // in the dock (no-op on X11)
+    LingmoUI.LayerShell.layer: LingmoUI.LayerShell.LayerBottom
+    LingmoUI.LayerShell.anchors: LingmoUI.LayerShell.AnchorTop | LingmoUI.LayerShell.AnchorRight
+    LingmoUI.LayerShell.topMargin: topOffset
+    LingmoUI.LayerShell.rightMargin: LingmoUI.Units.largeSpacing * 3
+    LingmoUI.LayerShell.exclusiveZone: -1
+    LingmoUI.LayerShell.keyboardInteractivity: LingmoUI.LayerShell.KeyboardOnDemand
+    LingmoUI.LayerShell.activateOnShow: false
+    LingmoUI.LayerShell.scope: "lingmo-widgets"
+    LingmoUI.LayerShell.screen: primaryScreen
+
     // The widgets live on the desktop and in the status bar icon, not in the dock
     onVisibleChanged: if (visible) widgetsService.keepOffTaskbar(control)
     Component.onCompleted: if (visible) Qt.callLater(widgetsService.keepOffTaskbar, control)
